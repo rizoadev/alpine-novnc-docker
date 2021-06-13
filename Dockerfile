@@ -18,6 +18,7 @@ RUN \
     rm -rf /root/noVNC/utils/websockify/.git && \
     apk del git && \
     sed -i -- "s/ps -p/ps -o pid | grep/g" /root/noVNC/utils/launch.sh
+RUN apk add chromium
 
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD 1
@@ -38,7 +39,6 @@ COPY package.json /app
 # Install dependencies
 RUN npm install
 COPY . /app
-RUN apk add chromium
 # Start server on port 3000∂
 EXPOSE 3000:3001
 ENV PORT=3001
