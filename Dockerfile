@@ -19,12 +19,15 @@ RUN \
     apk del git && \
     sed -i -- "s/ps -p/ps -o pid | grep/g" /root/noVNC/utils/launch.sh
 
+
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD 1
 ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
 WORKDIR /app
-COPY --chown=chrome package.json package-lock.json ./
+# COPY --chown=chrome package.json package-lock.json ./
+COPY package.json package-lock.json ./
 RUN npm install
-COPY --chown=chrome . ./
+# COPY --chown=chrome . ./
+COPY . ./
 
 # Cd into /app
 WORKDIR /app
@@ -35,7 +38,7 @@ COPY package.json /app
 # Install dependencies
 RUN npm install
 COPY . /app
-
+RUN apk add chromium
 # Start server on port 3000∂
 EXPOSE 3000:3001
 ENV PORT=3001
